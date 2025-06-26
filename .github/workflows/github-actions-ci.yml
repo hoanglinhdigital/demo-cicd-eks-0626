@@ -38,7 +38,7 @@ jobs:
     - name: Build, tag, and push docker image to Amazon ECR Frontend
       env:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: $FRONTEND_REPOSITORY
+        REPOSITORY: todo-app-frontend
         IMAGE_TAG: latest
       run: |
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./frontend
@@ -47,7 +47,7 @@ jobs:
     - name: Build, tag, and push docker image to Amazon ECR Backend
       env:
         REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        REPOSITORY: $BACKEND_REPOSITORY
+        REPOSITORY: todo-app-backend
         IMAGE_TAG: latest
       run: |
         docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG ./backend
