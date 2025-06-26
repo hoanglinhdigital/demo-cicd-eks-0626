@@ -59,7 +59,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 799227077423.dkr.ecr.ap-southeast-1.amazonaws.com/todo-app-backend:latest
+        image: 799227077423.dkr.ecr.ap-southeast-1.amazonaws.com/todo-app-backend:v0.0.2
         resources:
           requests:
             memory: "256Mi"
@@ -96,7 +96,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 799227077423.dkr.ecr.ap-southeast-1.amazonaws.com/todo-app-frontend:latest
+        image: 799227077423.dkr.ecr.ap-southeast-1.amazonaws.com/todo-app-frontend:v0.0.2
         resources:
           requests:
             memory: "256Mi"
