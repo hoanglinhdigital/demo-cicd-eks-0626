@@ -5,7 +5,19 @@ const { Todo } = require("../models/todos/todo");
 
 const routes = (app) => {
   const router = express.Router();
+  
+  //Get All TODOs
+  router.get("/", (req, res) => {
+    Todo.find({}, { __v: 0 })
+      .then((todos) => {
+        serverResponses.sendSuccess(res, messages.SUCCESSFUL, todos);
+      })
+      .catch((e) => {
+        serverResponses.sendError(res, messages.BAD_REQUEST, e);
+      });
+  });
 
+  //Create new TODO
   router.post("/todos", (req, res) => {
     const todo = new Todo({
       text: req.body.text,
@@ -21,15 +33,7 @@ const routes = (app) => {
       });
   });
 
-  router.get("/", (req, res) => {
-    Todo.find({}, { __v: 0 })
-      .then((todos) => {
-        serverResponses.sendSuccess(res, messages.SUCCESSFUL, todos);
-      })
-      .catch((e) => {
-        serverResponses.sendError(res, messages.BAD_REQUEST, e);
-      });
-  });
+
 
   // PUT method to update todo status to done
   router.put("/todos/:todoId", (req, res) => {

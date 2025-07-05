@@ -1,3 +1,4 @@
+#Mongo
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,6 +12,7 @@ spec:
       port: 27017
       targetPort: 27017
 ---
+#Mongo Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -29,20 +31,21 @@ spec:
       - name: mongo
         image: mongo:4.2.0
 ---
+#Backend Service
 apiVersion: v1
 kind: Service
 metadata:
   name: backend
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: backend
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-      nodePort: 30099
 ---
+#Backend Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -59,27 +62,28 @@ spec:
     spec:
       containers:
       - name: backend
-        image: 799227077423.dkr.ecr.ap-southeast-1.amazonaws.com/todo-app-backend:v0.0.2
+        image: todo-app-backend:v0.0.1
         resources:
           requests:
             memory: "256Mi"
           limits:
             memory: "512Mi"
 ---
+#Frontend Service
 apiVersion: v1
 kind: Service
 metadata:
   name: frontend
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: frontend
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
-      nodePort: 30088
 ---
+#Frontend Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -96,7 +100,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 799227077423.dkr.ecr.ap-southeast-1.amazonaws.com/todo-app-frontend:v0.0.2
+        image: todo-app-frontend:v0.0.1
         resources:
           requests:
             memory: "256Mi"
@@ -106,22 +110,21 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ingress-nginx
+  name: nginx-ingress
 spec:
-  ingressClassName: nginx
   rules:
-  - host: 
+  - host: "localhost"
     http:
       paths:
       - pathType: Prefix
-        path: /api
+        path: "/api/"
         backend:
           service:
             name: backend
             port:
               number: 3000
       - pathType: Prefix
-        path: /
+        path: "/"
         backend:
           service:
             name: frontend
